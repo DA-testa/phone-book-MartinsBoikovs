@@ -6,6 +6,46 @@ class Query:
         self.number = int(query[1])
         if self.type == 'add':
             self.name = query[2]
+            
+ class HashMap:
+    def __init__(self):
+        self.bucket_count = 1000
+        self.buckets = [[] for _ in range(self.bucket_count)]
+        self._multiplier = 263
+        self._prime = 1000000007
+
+    def _hash_func(self, s):
+        ans = 0
+        for c in reversed(s):
+            ans = (ans*self._multiplier + ord(c)) % self._prime
+        return ans % self.bucket_count
+
+    def add(self, string):
+        hashed = self._hash_func(str(string.number))
+        bucket = self.buckets[hashed]
+        if string.type == 'add':
+            for i in range(len(bucket)):
+                if bucket[i].number == string.number:
+                    bucket[i].name = string.name
+                    break
+            else:
+                self.buckets[hashed] = [string] + bucket
+
+    def delete(self, number):
+        hashed = self._hash_func(str(number))
+        bucket = self.buckets[hashed]
+        for i in range(len(bucket)):
+            if bucket[i].number == number:
+                bucket.pop(i)
+                break
+             
+    def find(self, string):
+        hashed = self._hash_func(string)
+        if string in self.buckets[hashed]:
+            return "yes"
+        return "no"
+
+
 
 def read_queries():
     n = int(input())
@@ -15,6 +55,9 @@ def write_responses(result):
     print('\n'.join(result))
 
 def process_queries(queries):
+    
+    
+    
     result = []
     # Keep list of all existing (i.e. not deleted yet) contacts.
     contacts = []
