@@ -6,6 +6,8 @@ class Query:
         self.number = int(query[1])
         if self.type == 'add':
             self.name = query[2]
+        else:
+            self.name = None
 
 class PhoneBook:
     def __init__(self):
@@ -24,7 +26,7 @@ class PhoneBook:
         hashed = self._hash_func(str(number))
         bucket = self.buckets[hashed]
         if name not in bucket:
-            self.buckets[hashed] = [name] + bucket
+            self.buckets[hashed] = [name] + bucket 
 
     def delete(self, string):
         hashed = self._hash_func(str(string))
@@ -34,11 +36,12 @@ class PhoneBook:
                 bucket.pop(i)
                 break
                     
-    def find(self, string):
-        hashed = self._hash_func(string)
-        if string in self.buckets[hashed]:
-            return "yes"
-        return "no"
+    def find(self, number):
+        hashed = self._hash_func(str(number))
+        for contact in self.buckets[hashed]:
+            if contact.number == number:
+                return contact.name
+        return "not found"
     
 
 
@@ -59,13 +62,7 @@ def process_queries(queries):
         elif cur_query.type == 'del':
             phone_book.delete(cur_query.number)
         else:
-            response = 'not found'
-            if phone_book.find(cur_query.number) == "yes":
-                for contact in phone_book.buckets[phone_book._hash_func(str(cur_query.number))]:
-                    if contact.number == cur_query.number:
-                        response = contact.name
-                        break
-            result.append(response)
+            result.append(phone_book.find(cur_query.number))
     return result
 
 if __name__ == '__main__':
