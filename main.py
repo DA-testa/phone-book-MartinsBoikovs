@@ -12,8 +12,8 @@ class Query:
 class PhoneBook:
     def __init__(self):
         self.bucket_count = 1000
-        self._prime = 10000019
-        self._multiplier = 263
+        self._prime = 10000211
+        self._multiplier = 341
         self.buckets = [[] for _ in range(self.bucket_count)]
 
     def _hash_func(self, s):
