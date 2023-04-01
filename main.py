@@ -20,11 +20,11 @@ class PhoneBook:
             ans = (ans*self._multiplier + ord(c)) % self._prime
         return ans % self.bucket_count
 
-    def add(self, string):
-        hashed = self._hash_func(str(string.number))
+    def add(self, number, name):
+        hashed = self._hash_func(str(number))
         bucket = self.buckets[hashed]
-        if string not in bucket:
-            self.buckets[hashed] = [string] + bucket
+        if name not in bucket:
+            self.buckets[hashed] = [name] + bucket
 
     def delete(self, string):
         hashed = self._hash_func(str(string))
@@ -55,7 +55,7 @@ def process_queries(queries):
     phone_book = PhoneBook()
     for cur_query in queries:
         if cur_query.type == 'add':
-            phone_book.add(cur_query)
+            phone_book.add(cur_query.number, cur_query.name)
         elif cur_query.type == 'del':
             phone_book.delete(cur_query.number)
         else:
