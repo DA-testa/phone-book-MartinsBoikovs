@@ -11,16 +11,13 @@ class Query:
 
 class PhoneBook:
     def __init__(self):
-        self.bucket_count = 1000
-        self._prime = 10000211
-        self._multiplier = 341
-        self.buckets = [[] for _ in range(self.bucket_count)]
+        self.buckets = [[] for _ in range(1000)]
 
     def _hash_func(self, s):
         ans = 0
         for c in reversed(s):
-            ans = (ans*self._multiplier + ord(c)) % self._prime
-        return ans % self.bucket_count
+            ans = (ans*341 + ord(c)) % 10000211
+        return ans % 1000
 
     def add(self, number, name):
         hashed = self._hash_func(str(number))
