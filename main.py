@@ -25,8 +25,11 @@ class PhoneBook:
     def add(self, number, name):
         hashed = self._hash_func(str(number))
         bucket = self.buckets[hashed]
-        if name not in bucket:
-            self.buckets[hashed] = [name] + bucket 
+        for i, contact in enumerate(bucket):
+            if contact.number == number:
+                bucket[i] = Query(['add', number, name])
+                return
+        self.buckets[hashed] = [Query(['add', number, name])] + bucket 
 
     def delete(self, string):
         hashed = self._hash_func(str(string))
