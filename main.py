@@ -31,11 +31,11 @@ class PhoneBook:
                 return
         self.buckets[hashed] = [Query(['add', number, name])] + bucket 
 
-    def delete(self, string):
-        hashed = self._hash_func(str(string))
+    def delete(self, number):
+        hashed = self._hash_func(str(number))
         bucket = self.buckets[hashed]
         for i in range(len(bucket)):
-            if bucket[i] == string:      
+            if bucket[i].number == number:      
                 bucket.pop(i)
                 break
                     
